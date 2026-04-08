@@ -17,13 +17,12 @@
             color: #1e293b;
             padding: 20px;
             min-height: 100vh;
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.3s, color 0.2s;
             position: relative;
         }
 
-        /* СДВГ-ФОН для ананасового режима (анимированные частицы) */
-        body.pineapple::before {
-            content: '';
+        /* ============= ОБЩИЙ ФОН ДЛЯ ОБЫЧНОГО РЕЖИМА (геометрический) ============= */
+        .normal-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -33,114 +32,144 @@
             z-index: 0;
             overflow: hidden;
         }
+        .normal-bg .shape {
+            position: absolute;
+            background: rgba(147, 197, 253, 0.15);
+            border-radius: 50%;
+            animation: floatNormal 20s ease-in-out infinite;
+        }
+        .normal-bg .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+            background: rgba(59, 130, 246, 0.1);
+            animation-duration: 25s;
+        }
+        .normal-bg .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            bottom: 50px;
+            right: -50px;
+            background: rgba(168, 85, 247, 0.08);
+            animation-duration: 20s;
+            animation-delay: 2s;
+        }
+        .normal-bg .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 40%;
+            left: 80%;
+            background: rgba(236, 72, 153, 0.08);
+            animation-duration: 18s;
+            animation-delay: 5s;
+        }
+        .normal-bg .shape:nth-child(4) {
+            width: 250px;
+            height: 250px;
+            bottom: 20%;
+            left: 10%;
+            background: rgba(34, 197, 94, 0.06);
+            animation-duration: 22s;
+            animation-delay: 1s;
+        }
+        .normal-bg .shape:nth-child(5) {
+            width: 100px;
+            height: 100px;
+            top: 15%;
+            left: 20%;
+            background: rgba(249, 115, 22, 0.1);
+            animation-duration: 15s;
+            animation-delay: 8s;
+        }
+        .normal-bg .shape:nth-child(6) {
+            width: 180px;
+            height: 180px;
+            top: 70%;
+            left: 75%;
+            background: rgba(59, 130, 246, 0.07);
+            animation-duration: 28s;
+            animation-delay: 3s;
+        }
+        @keyframes floatNormal {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -30px) rotate(5deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(-3deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
 
-        /* Летающие ананасы */
-        .floating-pineapple {
+        /* СДВГ-ФОН для ананасового режима */
+        .adhd-container {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .floating-pineapple {
+            position: absolute;
             pointer-events: none;
             font-size: 2rem;
-            z-index: 0;
             animation: floatAround 8s ease-in-out infinite;
             opacity: 0.6;
         }
-
         @keyframes floatAround {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            25% {
-                transform: translate(50px, -30px) rotate(15deg);
-            }
-            50% {
-                transform: translate(-20px, -60px) rotate(-10deg);
-            }
-            75% {
-                transform: translate(30px, 20px) rotate(5deg);
-            }
-            100% {
-                transform: translate(0, 0) rotate(0deg);
-            }
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -30px) rotate(15deg); }
+            50% { transform: translate(-20px, -60px) rotate(-10deg); }
+            75% { transform: translate(30px, 20px) rotate(5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
         }
-
-        /* Пульсирующие круги */
         .pulsing-circle {
-            position: fixed;
+            position: absolute;
             pointer-events: none;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(251,146,60,0.3) 0%, rgba(234,88,12,0) 70%);
-            z-index: 0;
             animation: pulse 3s ease-in-out infinite;
         }
-
         @keyframes pulse {
-            0% {
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(0.8); opacity: 0.5; }
         }
-
-        /* Движущиеся точки (СДВГ-эффект) */
         .adhd-dot {
-            position: fixed;
+            position: absolute;
             pointer-events: none;
             width: 4px;
             height: 4px;
             background: #f97316;
             border-radius: 50%;
-            z-index: 0;
             animation: moveDot 5s linear infinite;
             opacity: 0.7;
         }
-
         @keyframes moveDot {
-            0% {
-                transform: translate(0, 0);
-            }
-            100% {
-                transform: translate(var(--dx, 100px), var(--dy, 100px));
-            }
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(var(--dx, 100px), var(--dy, 100px)); }
         }
-
-        /* Вращающиеся шестиугольники (пчелиные соты в бешеном ритме) */
         .spinning-hex {
-            position: fixed;
+            position: absolute;
             pointer-events: none;
             font-size: 3rem;
-            z-index: 0;
             animation: spin 4s linear infinite;
             opacity: 0.3;
         }
-
         @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* Зигзагообразные линии */
-        .zigzag {
-            position: fixed;
-            pointer-events: none;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            opacity: 0.15;
-        }
-
-        /* Контент должен быть поверх фона */
+        /* Контент поверх фона */
         .app-container {
             position: relative;
             z-index: 1;
@@ -196,7 +225,7 @@
         }
         body.light .facts-section,
         body.light .quiz-panel {
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.92);
             border-color: #cbd5e1;
             color: #1e293b;
         }
@@ -225,7 +254,7 @@
         }
         body.dark .facts-section,
         body.dark .quiz-panel {
-            background: rgba(30,41,59,0.95);
+            background: rgba(30,41,59,0.92);
             border-color: #334155;
             color: #f1f5f9;
         }
@@ -247,7 +276,7 @@
             border-color: #64748b;
         }
 
-        /* АНАНАСОВЫЙ РЕЖИМ (светлый) - фон прозрачный, чтобы анимации были видны */
+        /* АНАНАСОВЫЙ РЕЖИМ (светлый) */
         body.pineapple {
             background: #fff7ed;
             color: #7c2d12;
@@ -563,6 +592,7 @@
     // СДВГ-элементы
     let adhdInterval = null;
     let floatingElements = [];
+    let normalBg = null;
 
     const themeToggle = document.getElementById('themeToggleBtn');
     const factDisplay = document.getElementById('factDisplay');
@@ -573,30 +603,42 @@
     const modeLabelSpan = document.getElementById('modeLabel');
     const resetGameBtn = document.getElementById('resetGameBtn');
 
+    // ============= ОБЫЧНЫЙ ФОН (геометрический) =============
+    function startNormalBackground() {
+        stopNormalBackground();
+        if (currentMode === 'pineapple') return;
+        
+        const container = document.createElement('div');
+        container.className = 'normal-bg';
+        for (let i = 1; i <= 6; i++) {
+            const shape = document.createElement('div');
+            shape.className = 'shape';
+            container.appendChild(shape);
+        }
+        document.body.appendChild(container);
+        normalBg = container;
+    }
+    
+    function stopNormalBackground() {
+        if (normalBg) {
+            normalBg.remove();
+            normalBg = null;
+        }
+    }
+
     // ============= СДВГ-ФОН =============
     function startADHDFloor() {
         stopADHDFloor();
         if (currentMode !== 'pineapple') return;
         
-        // Создаём контейнер для СДВГ-элементов
         const container = document.createElement('div');
-        container.id = 'adhd-container';
-        container.style.position = 'fixed';
-        container.style.top = '0';
-        container.style.left = '0';
-        container.style.width = '100%';
-        container.style.height = '100%';
-        container.style.pointerEvents = 'none';
-        container.style.zIndex = '0';
-        container.style.overflow = 'hidden';
-        document.body.appendChild(container);
+        container.className = 'adhd-container';
         
-        // 1. Летающие ананасы (15 штук)
-        const pineappleEmojis = ['🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍', '🍍'];
+        // 15 летающих ананасов
         for (let i = 0; i < 15; i++) {
             const el = document.createElement('div');
             el.className = 'floating-pineapple';
-            el.textContent = pineappleEmojis[i % pineappleEmojis.length];
+            el.textContent = '🍍';
             el.style.left = Math.random() * 100 + '%';
             el.style.top = Math.random() * 100 + '%';
             el.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
@@ -606,7 +648,7 @@
             floatingElements.push(el);
         }
         
-        // 2. Пульсирующие круги (10 штук)
+        // 10 пульсирующих кругов
         for (let i = 0; i < 10; i++) {
             const circle = document.createElement('div');
             circle.className = 'pulsing-circle';
@@ -620,7 +662,7 @@
             floatingElements.push(circle);
         }
         
-        // 3. Движущиеся точки (СДВГ-муравьи) - 50 штук
+        // 50 движущихся точек
         for (let i = 0; i < 50; i++) {
             const dot = document.createElement('div');
             dot.className = 'adhd-dot';
@@ -636,8 +678,8 @@
             floatingElements.push(dot);
         }
         
-        // 4. Вращающиеся шестиугольники (8 штук)
-        const hexSymbols = ['⬡', '⬢', '⬟', '🔶', '🔷', '🍍', '🍍'];
+        // 8 вращающихся шестиугольников
+        const hexSymbols = ['⬡', '⬢', '⬟', '🔶', '🔷', '🍍'];
         for (let i = 0; i < 8; i++) {
             const hex = document.createElement('div');
             hex.className = 'spinning-hex';
@@ -651,46 +693,8 @@
             floatingElements.push(hex);
         }
         
-        // 5. Мерцающий зигзаг SVG
-        const zigzag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        zigzag.setAttribute('class', 'zigzag');
-        zigzag.style.position = 'fixed';
-        zigzag.style.top = '0';
-        zigzag.style.left = '0';
-        zigzag.style.width = '100%';
-        zigzag.style.height = '100%';
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        let d = 'M0,50 ';
-        for (let i = 0; i < 20; i++) {
-            d += `L${i * 50},${Math.sin(i) * 30 + 50} `;
-        }
-        path.setAttribute('d', d);
-        path.setAttribute('stroke', '#f97316');
-        path.setAttribute('stroke-width', '2');
-        path.setAttribute('fill', 'none');
-        path.setAttribute('opacity', '0.3');
-        zigzag.appendChild(path);
-        container.appendChild(zigzag);
-        floatingElements.push(zigzag);
-        
-        // Анимируем зигзаг
-        let angle = 0;
-        adhdInterval = setInterval(() => {
-            if (currentMode !== 'pineapple') return;
-            angle += 0.05;
-            const newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            let newD = 'M0,50 ';
-            for (let i = 0; i <= 20; i++) {
-                newD += `L${i * (window.innerWidth / 20)},${Math.sin(angle + i * 0.5) * 40 + 50} `;
-            }
-            newPath.setAttribute('d', newD);
-            newPath.setAttribute('stroke', '#ea580c');
-            newPath.setAttribute('stroke-width', '2');
-            newPath.setAttribute('fill', 'none');
-            newPath.setAttribute('opacity', '0.25');
-            zigzag.innerHTML = '';
-            zigzag.appendChild(newPath);
-        }, 100);
+        document.body.appendChild(container);
+        floatingElements.push(container);
     }
     
     function stopADHDFloor() {
@@ -698,8 +702,7 @@
             clearInterval(adhdInterval);
             adhdInterval = null;
         }
-        const container = document.getElementById('adhd-container');
-        if (container) container.remove();
+        floatingElements.forEach(el => el.remove());
         floatingElements = [];
     }
     
@@ -718,11 +721,13 @@
             document.body.classList.add('pineapple');
             modeLabelSpan.innerText = 'Ананасовый 🍍';
             themeToggle.textContent = '🍍';
+            stopNormalBackground();
             startADHDFloor();
         } else {
             modeLabelSpan.innerText = 'Обычный';
             themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
             stopADHDFloor();
+            startNormalBackground();
         }
         updateFactDisplay();
     }

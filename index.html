@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Математическая декада | Викторина</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Темная тема (обычный режим) */
+        body.dark {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        /* Ананасовый режим (светлый фон, но оранжевые акценты) */
+        body.pineapple {
+            background: #fff7ed;
+            color: #7c2d12;
+        }
+        body.pineapple.dark {
+            background: #2d1a0e;
+            color: #fed7aa;
+        }
+
+        .app-container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Шапка с переключателем */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .theme-toggle {
+            background: #e2e8f0;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            border-radius: 60px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+        body.dark .theme-toggle {
+            background: #334155;
+            color: #facc15;
+        }
+        body.pineapple .theme-toggle {
+            background: #fed7aa;
+            color: #ea580c;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.02);
+        }
+
+        /* Факты */
+        .facts-section {
+            background: white;
+            border-radius: 32px;
+            padding: 24px 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        body.dark .facts-section {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        body.pineapple .facts-section {
+            background: #fffbeb;
+            border-color: #fed7aa;
+        }
+        body.pineapple.dark .facts-section {
+            background: #3b2a1f;
+            border-color: #78350f;
+        }
+        .facts-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 6px solid #f97316;
+            padding-left: 20px;
+        }
+        .fact-text {
+            font-size: 1.2rem;
+            line-height: 1.45;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 24px;
+            font-weight: 500;
+        }
+        body.dark .fact-text {
+            background: #0f172a;
+        }
+        body.pineapple .fact-text {
+            background: #ffedd5;
+        }
+        .fact-nav {
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+        }
+        .fact-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Викторина */
+        .quiz-panel {
+            background: white;
+            border-radius: 32px;
+            padding: 24px 28px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        body.dark .quiz-panel {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        body.pineapple .quiz-panel {
+            background: #fffbeb;
+        }
+
+        .row-indicator {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            background: #f97316;
+            color: white;
+            padding: 12px;
+            border-radius: 60px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .countdown {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #f97316;
+        }
+
+        .question-card {
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 28px;
+            margin: 16px 0;
+        }
+        body.dark .question-card {
+            background: #0f172a;
+        }
+        body.pineapple .question-card {
+            background: #fff1e6;
+        }
+        .question-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .timer {
+            font-size: 2.2rem;
+            font-family: monospace;
+            font-weight: bold;
+            background: #0f172a;
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 60px;
+            color: #facc15;
+            margin-bottom: 20px;
+        }
+        .answer-input-area {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .answer-input {
+            flex: 2;
+            padding: 14px 20px;
+            font-size: 1.2rem;
+            border-radius: 60px;
+            border: 2px solid #cbd5e1;
+            font-family: monospace;
+        }
+        .check-btn {
+            background: #f97316;
+            border: none;
+            padding: 0 28px;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: white;
+        }
+        .feedback {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 40px;
+        }
+        .next-row-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        button {
+            cursor: pointer;
+        }
+        .reset-progress {
+            background: #475569;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            margin-top: 12px;
+            font-size: 0.8rem;
+        }
+        @media (max-width: 700px) {
+            .question-text { font-size: 1.2rem; }
+            .facts-title { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="top-bar">
+        <button class="theme-toggle" id="themeToggleBtn">🍍</button>
+    </div>
+
+    <!-- Блок фактов -->
+    <div class="facts-section">
+        <div class="facts-title">
+            <span>📐</span> Интересные факты о математике
+        </div>
+        <div class="fact-text" id="factDisplay">
+            Загрузка фактов...
+        </div>
+        <div class="fact-nav">
+            <button class="fact-btn" id="prevFactBtn">← Предыдущий</button>
+            <button class="fact-btn" id="nextFactBtn">Следующий →</button>
+        </div>
+    </div>
+
+    <!-- Блок викторины -->
+    <div class="quiz-panel">
+        <div class="row-indicator" id="rowLabel">Первый ряд</div>
+        <div id="quizDynamicArea">
+            <!-- Тут будет динамика: отсчет, вопрос, таймер, поле ввода -->
+            <div class="countdown" id="countdownDisplay">▶ СТАРТ</div>
+            <button id="startRoundBtn" style="padding: 12px 24px; background:#f97316; border:none; border-radius:60px; font-weight:bold;">Начать раунд</button>
+        </div>
+        <hr>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div><strong>Режим:</strong> <span id="modeLabel">Обычный</span></div>
+            <button class="reset-progress" id="resetGameBtn">🔄 Сбросить прогресс (ряды/вопросы)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 1. ИСПРАВЛЕННЫЕ ФАКТЫ (из Dokument.docx, орфография исправлена)
+    // --------------------------------------------------------------
+    const factsList = [
+        "Десятичная система счёта возникла из-за количества пальцев на руках — это самое естественное объяснение, почему мы считаем десятками.",
+        "Компьютерная графика в фильмах — это чистая геометрия. CGI (компьютерная графика в фильмах вроде «Аватар» или «Властелин колец») основана на трёхмерной геометрии. Оживающие на экране монстры и персонажи стали возможны благодаря работам ирландского математика Уильяма Гамильтона, чьи открытия через сто лет нашли применение в 3D-моделировании.",
+        "Пчелиные соты имеют шестиугольную форму не случайно. Среди всех фигур с одинаковым периметром наибольшую площадь имеет круг, но круги не могут заполнить плоскость без зазоров. Шестиугольник — это идеальный компромисс: он позволяет заполнить плоскость без пустот и при этом максимально экономит материал и воск. Пчёлы «решили» эту оптимизационную задачу миллионы лет назад.",
+        "Спутниковая навигация невозможна без учёта теории относительности. Чтобы GPS определял ваше местоположение с точностью до метров, спутники передают сигналы с точной временной привязкой. При этом учитываются эффекты специальной и общей теории относительности Эйнштейна — без этих поправок ошибка накапливалась бы по несколько километров в день.",
+        "Фотографии хранятся благодаря математике. Когда вы делаете фото на смартфон, изображение сжимается в формат JPEG. Для этого выполняется пять последовательных математических преобразований, включая дискретный анализ Фурье и теорию шифрования. Без этих вычислений одно фото занимало бы в десятки раз больше памяти.",
+        "Навигатор прокладывает маршрут через «задачу коммивояжёра». GPS-навигатор и картографические сервисы используют алгоритмы поиска кратчайшего пути (например, алгоритм Дейкстры). Те же математические методы применяются для расчёта оптимальных маршрутов доставки, логистики и даже автопилота самолётов.",
+        "Розы растут по геометрическому принципу, который раньше не встречался в природе. В 2025 году физики обнаружили, что форма лепестков роз определяется механической обратной связью, связанной с «внешней» геометрией. Лепестки «хотят» быть плоскими, но скручиваются в форму цилиндра — и в точках соединения образуются острые кончики. Это первый известный пример такого природного орнамента.",
+        "Раковины моллюсков и рога козлов закручены по логарифмической спирали.",
+        "Галстук можно завязать 177 147 способами — это строго доказанный математический результат.",
+        "Миг — это реальная единица времени, которая длится примерно сотую долю секунды.",
+        "Почему в казино всегда выигрывает заведение? У любой игры есть математическое ожидание выигрыша. В честной игре оно равно нулю. В казино оно всегда отрицательно для игрока (например, в рулетке с зеро — минус 1/37 от каждой ставки). Это называется «преимущество казино».",
+        "Пифагор объяснил, почему одни аккорды звучат красиво, а другие — нет. Ещё древнегреческий математик Пифагор заметил, что приятные слуху созвучия (консонансы) возникают, когда длины струн соотносятся как простые дроби: 1/2 (октава), 3/2 (квинта), 4/3 (кварта).",
+        "10! секунд — это ровно 6 недель.",
+        "Количество способов перетасовать колоду карт больше, чем атомов на Земле."
+    ];
+
+    // --------------------------------------------------------------
+    // 2. ЗАДАНИЯ: ОБЫЧНЫЕ (исправлены орфография и "покет" -> "пакет")
+    // --------------------------------------------------------------
+    const normalQuestions = [
+        { text: "Пакет молока стоит 85 руб. за штуку. Какое максимальное число пакетов можно купить на 500 руб., если их цена снизится на 20%?", answer: "7" },
+        { text: "Из шести букв разрезной азбуки составлено слово «ЗАДАЧА». Сколько различных последовательностей букв можно получить, переставляя карточки?", answer: "60" },
+        { text: "В классе 9 детей. Какова вероятность, что хотя бы у двоих дни рождения в одном месяце? (Считать, что месяцы равновероятны, а дети не двойняшки).", answer: "0.98" },
+        { text: "На четырёх карточках написаны цифры: 1, 2, 3, 4. Ребёнок случайным образом выкладывает их в ряд, получая четырёхзначное число. Какова вероятность, что это число окажется чётным?", answer: "0.5" },
+        { text: "В турнире 6 игроков, каждый играет с каждым ровно один раз. Ничьих нет. Оказалось, что Саша выиграл ровно 4 партии. Какова вероятность, что он проиграл Пете? (Считать все распределения результатов равновероятными при условии 4 побед Саши).", answer: "0.2" },
+        { text: "В команде 5 ребят: 3 мальчика и 2 девочки. Наугад выбирают капитана и его заместителя (разные ребята). Какова вероятность, что оба выбранных — мальчики?", answer: "0.3" },
+        { text: "Родительский комитет закупил 20 пазлов для подарков детям в связи с окончанием учебного года, из них 8 с машинками и 12 с видами городов. Подарки распределяются случайным образом между 20 детьми, среди которых есть Петя. Найдите вероятность того, что Пете достанется пазл с машинками.", answer: "0.4" },
+        { text: "В коробке лежат 5 красных, 4 синих и 3 зелёных шара. Случайным образом вытаскивают 2 шара без возвращения. Найдите вероятность того, что они окажутся разного цвета, если известно, что хотя бы один из них красный.", answer: "0.78" },
+        { text: "На отрезке длиной 10 м случайным образом выбирают точку. Найдите вероятность того, что расстояние от неё до ближайшего конца отрезка больше 3 м.", answer: "0.4" },
+        { text: "В магазине сначала повысили цену на 20%, а затем снизили на 20%. Как изменилась цена относительно первоначальной? (Ответ числом: -4 означает -4%)", answer: "-4" },
+        { text: "В классе 30 детей. 20 любят математику, 15 — русский, 5 не любят ни то, ни другое. Найдите вероятность того, что случайно выбранный ребёнок любит оба предмета.", answer: "0.33" },
+        { text: "Кирпич весит 1 кг и ещё полкирпича. Сколько весит целый кирпич?", answer: "2" },
+        { text: "На озере растут кувшинки. Каждый день их количество удваивается. Известно, что полностью озеро зарастает за 48 дней. За сколько дней кувшинки закроют ровно половину озера?", answer: "47" },
+        { text: "Пять землекопов за 5 часов выкапывают 5 метров канавы. Сколько землекопов нужно, чтобы выкопать 100 метров канавы за 100 часов?", answer: "5" },
+        { text: "Представьте, что земной шар плотно обтянули по экватору верёвкой. Затем длину верёвки увеличили всего на 1 метр и снова равномерно растянули над поверхностью. Сможет ли в образовавшуюся щель пролезть мышь? (Ответ: да/нет)", answer: "да" }
+    ];
+
+    // --------------------------------------------------------------
+    // 3. ШУТОЧНЫЕ АНАНАСОВЫЕ ЗАДАНИЯ (исправлены все ошибки, "покет" -> "ананас")
+    // --------------------------------------------------------------
+    const pineappleQuestions = [
+        { text: "Ананас стоит 85 руб. за штуку. Какое максимальное число ананасов можно купить на 500 руб., если их цена снизится на 20%?", answer: "7" },
+        { text: "Из шести букв разрезной азбуки составлено слово «АНАНАС». Сколько различных последовательностей букв можно получить, переставляя карточки?", answer: "60" },
+        { text: "В классе 9 ананасов. Какова вероятность, что хотя бы у двоих дни рождения в одном месяце? (Считать, что месяцы равновероятны, а дети не двойняшки).", answer: "0.98" },
+        { text: "На четырёх карточках написаны цифры: 1, 2, 3, 4. Ананас случайным образом выкладывает их в ряд, получая четырёхзначное число. Какова вероятность, что это число окажется чётным?", answer: "0.5" },
+        { text: "В турнире 6 ананасов, каждый играет с каждым ровно один раз. Ничьих нет. Оказалось, что синий ананас выиграл ровно 4 партии. Какова вероятность, что он проиграл красному ананасу? (Считать все распределения результатов равновероятными при условии 4 побед синего ананаса).", answer: "0.2" },
+        { text: "В команде 5 ананасов: 3 синих и 2 красных. Наугад выбирают капитана и его заместителя (разные ананасы). Какова вероятность, что оба выбранных — синие?", answer: "0.3" },
+        { text: "Ананасовый комитет закупил 20 пазлов для подарков детям ананасов в связи с окончанием учебного года, из них 8 с синими ананасами и 12 с видами зелёных ананасов. Подарки распределяются случайным образом между 20 детьми-ананасами, среди которых есть жёлтый ананас. Найдите вероятность того, что жёлтому ананасу достанется пазл с синими ананасами.", answer: "0.4" },
+        { text: "В коробке лежат 5 красных ананасов, 4 синих ананаса и 3 зелёных ананаса. Случайным образом вытаскивают 2 ананаса без возвращения. Найдите вероятность того, что они окажутся разного цвета, если известно, что хотя бы один из них красный.", answer: "0.78" },
+        { text: "На ананасе длиной 10 м случайным образом выбирают точку. Найдите вероятность того, что расстояние от неё до ближайшего конца ананаса больше 3 м.", answer: "0.4" },
+        { text: "В магазине сначала повысили цену ананаса на 20%, а затем снизили на 20%. Как изменилась цена относительно первоначальной? (Ответ числом: -4 означает -4%)", answer: "-4" },
+        { text: "В классе 30 ананасов. 20 любят математику, 15 — русский, 5 не любят ни то, ни другое. Найдите вероятность того, что случайно выбранный ананас любит оба предмета.", answer: "0.33" },
+        { text: "Ананас весит 1 кг и ещё пол-ананаса. Сколько весит целый ананас?", answer: "2" },
+        { text: "На озере растут ананасы. Каждый день их количество удваивается. Известно, что полностью озеро зарастает за 48 дней. За сколько дней ананасы закроют ровно половину озера?", answer: "47" },
+        { text: "Пять ананасов за 5 часов выкапывают 5 метров ананасовой горы. Сколько ананасов нужно, чтобы выкопать 100 метров ананасовой горы за 100 часов?", answer: "5" },
+        { text: "Представьте, что огромный ананас плотно обтянули по экватору верёвкой. Затем длину верёвки увеличили всего на 1 метр и снова равномерно растянули над поверхностью ананаса. Сможет ли в образовавшуюся щель пролезть мышь? (Ответ: да/нет)", answer: "да" }
+    ];
+
+    // Текущий режим: 'normal' или 'pineapple'
+    let currentMode = localStorage.getItem('mathMode') || 'normal';
+    // Текущие данные для викторины
+    let currentQuestions = currentMode === 'normal' ? normalQuestions : pineappleQuestions;
+    let currentFactIndex = 0;
+    let currentRow = parseInt(localStorage.getItem('currentRow')) || 0;   // 0,1,2 -> ряд 1,2,3
+    let currentQuestionIndex = parseInt(localStorage.getItem('currentQuestionIdx')) || 0;
+    let waitingForStart = true;   // режим ожидания нажатия "Начать раунд"
+    let activeTimer = null;
+    let activeCountdownInterval = null;
+    let questionStartTimestamp = 0;
+    let isAwaitingAnswer = false;
+
+    // DOM элементы
+    const themeToggle = document.getElementById('themeToggleBtn');
+    const factDisplay = document.getElementById('factDisplay');
+    const prevFactBtn = document.getElementById('prevFactBtn');
+    const nextFactBtn = document.getElementById('nextFactBtn');
+    const quizDynamicArea = document.getElementById('quizDynamicArea');
+    const rowLabel = document.getElementById('rowLabel');
+    const modeLabelSpan = document.getElementById('modeLabel');
+    const resetGameBtn = document.getElementById('resetGameBtn');
+
+    // Вспомогательные функции
+    function saveProgress() {
+        localStorage.setItem('currentRow', currentRow);
+        localStorage.setItem('currentQuestionIdx', currentQuestionIndex);
+        localStorage.setItem('mathMode', currentMode);
+    }
+
+    function applyThemeAndMode() {
+        const isDark = localStorage.getItem('theme') === 'dark';
+        const isPine = currentMode === 'pineapple';
+        document.body.classList.toggle('dark', isDark);
+        document.body.classList.toggle('pineapple', isPine);
+        if (isPine) {
+            themeToggle.textContent = '🍍';
+            modeLabelSpan.innerText = 'Ананасовый 🍍';
+        } else {
+            themeToggle.textContent = isDark ? '🌙' : '☀️';
+            modeLabelSpan.innerText = 'Обычный';
+        }
+        updateFactDisplay();
+    }
+
+    function updateFactDisplay() {
+        let factText = factsList[currentFactIndex % factsList.length];
+        factDisplay.innerText = factText;
+    }
+
+    function switchMode() {
+        if (currentMode === 'normal') {
+            currentMode = 'pineapple';
+        } else {
+            currentMode = 'normal';
+        }
+        currentQuestions = currentMode === 'normal' ? normalQuestions : pineappleQuestions;
+        // Сбрасываем прогресс вопросов и рядов при смене режима чтобы не было конфликта длины вопросов
+        currentQuestionIndex = 0;
+        currentRow = 0;
+        saveProgress();
+        // Останавливаем всё, перерисовываем UI
+        resetGameUI();
+        applyThemeAndMode();
+        renderQuizReadyState();
+    }
+
+    function resetGameUI() {
+        if (activeTimer) clearTimeout(activeTimer);
+        if (activeCountdownInterval) clearInterval(activeCountdownInterval);
+        waitingForStart = true;
+        isAwaitingAnswer = false;
+        renderQuizReadyState();
+        updateRowLabel();
+    }
+
+    function updateRowLabel() {
+        const rowNames = ['Первый ряд', 'Второй ряд', 'Третий ряд'];
+        rowLabel.innerText = rowNames[currentRow % 3];
+    }
+
+    function renderQuizReadyState() {
+        quizDynamicArea.innerHTML = `
+            <div class="countdown">📢 ${['ПЕРВЫЙ РЯД', 'ВТОРОЙ РЯД', 'ТРЕТИЙ РЯД'][currentRow % 3]}</div>
+            <button id="startRoundBtn" style="padding:12px 24px; background:#f97316; border:none; border-radius:60px; font-weight:bold;">Начать раунд</button>
+        `;
+        const startBtn = document.getElementById('startRoundBtn');
+        if (startBtn) startBtn.onclick = startRound;
+    }
+
+    function startRound() {
+        if (activeTimer) clearTimeout(activeTimer);
+        if (activeCountdownInterval) clearInterval(activeCountdownInterval);
+        let countdown = 3;
+        quizDynamicArea.innerHTML = `<div class="countdown" id="countdownDisplay">${countdown}</div>`;
+        const countdownEl = document.getElementById('countdownDisplay');
+        activeCountdownInterval = setInterval(() => {
+            countdown--;
+            if (countdownEl) countdownEl.innerText = countdown;
+            if (countdown <= 0) {
+                clearInterval(activeCountdownInterval);
+                showQuestion();
+            }
+        }, 1000);
+    }
+
+    function showQuestion() {
+        const qData = currentQuestions[currentQuestionIndex % currentQuestions.length];
+        const questionHtml = `
+            <div class="question-card">
+                <div class="question-text">❓ ${qData.text}</div>
+                <div class="timer" id="timerDisplay">01:30</div>
+                <div class="answer-input-area">
+                    <input type="text" id="answerInput" class="answer-input" placeholder="Введите ответ (число или слово)" autocomplete="off">
+                    <button id="checkAnswerBtn" class="check-btn">✅ Проверить</button>
+                </div>
+                <div id="feedbackArea" class="feedback"></div>
+            </div>
+        `;
+        quizDynamicArea.innerHTML = questionHtml;
+        const answerInput = document.getElementById('answerInput');
+        const checkBtn = document.getElementById('checkAnswerBtn');
+        const timerDisplay = document.getElementById('timerDisplay');
+        let timeLeft = 90; // секунд
+        const updateTimer = () => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.innerText = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+            if (timeLeft <= 0) {
+                clearInterval(activeTimer);
+                document.getElementById('feedbackArea').innerHTML = '<span style="color:red;">⏰ Время вышло! Раунд завершён, переходим к следующему ряду.</span>';
+                disableAnswering();
+                setTimeout(() => moveToNextRow(), 2500);
+            }
+        };
+        updateTimer();
+        activeTimer = setInterval(() => {
+            timeLeft--;
+            updateTimer();
+        }, 1000);
+        const checkAnswer = () => {
+            if (!isAwaitingAnswer && activeTimer) {
+                isAwaitingAnswer = true;
+                const userAnswer = answerInput.value.trim().toLowerCase();
+                const correctAnswer = qData.answer.toLowerCase();
+                let isCorrect = false;
+                if (!isNaN(parseFloat(userAnswer)) && isFinite(userAnswer) && !isNaN(parseFloat(correctAnswer))) {
+                    isCorrect = Math.abs(parseFloat(userAnswer) - parseFloat(correctAnswer)) < 0.01;
+                } else {
+                    isCorrect = (userAnswer === correctAnswer);
+                }
+                const feedbackDiv = document.getElementById('feedbackArea');
+                if (isCorrect) {
+                    feedbackDiv.innerHTML = '<span style="color:#2ecc71;">✅ ПРАВИЛЬНО! Молодцы!</span>';
+                } else {
+                    feedbackDiv.innerHTML = `<span style="color:#e74c3c;">❌ НЕПРАВИЛЬНО. Правильный ответ: ${correctAnswer}</span>`;
+                }
+                clearInterval(activeTimer);
+                disableAnswering();
+                setTimeout(() => moveToNextRow(), 3000);
+            }
+        };
+        const disableAnswering = () => {
+            if (checkBtn) checkBtn.disabled = true;
+            if (answerInput) answerInput.disabled = true;
+        };
+        checkBtn.onclick = checkAnswer;
+        answerInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAnswer(); });
+        isAwaitingAnswer = false;
+    }
+
+    function moveToNextRow() {
+        if (activeTimer) clearInterval(activeTimer);
+        currentRow = (currentRow + 1) % 3;
+        currentQuestionIndex = (currentQuestionIndex + 1) % currentQuestions.length;
+        saveProgress();
+        updateRowLabel();
+        waitingForStart = true;
+        renderQuizReadyState();
+    }
+
+    function resetGameProgress() {
+        currentQuestionIndex = 0;
+        currentRow = 0;
+        saveProgress();
+        resetGameUI();
+        updateRowLabel();
+    }
+
+    // Переключение тёмной/светлой темы (независимо от ананасов)
+    let currentDark = localStorage.getItem('theme') === 'dark';
+    function toggleDark() {
+        currentDark = !currentDark;
+        localStorage.setItem('theme', currentDark ? 'dark' : 'light');
+        applyThemeAndMode();
+    }
+
+    // Инициализация
+    function init() {
+        if (!localStorage.getItem('theme')) localStorage.setItem('theme', 'light');
+        applyThemeAndMode();
+        currentFactIndex = 0;
+        updateFactDisplay();
+        prevFactBtn.onclick = () => { currentFactIndex = (currentFactIndex - 1 + factsList.length) % factsList.length; updateFactDisplay(); };
+        nextFactBtn.onclick = () => { currentFactIndex = (currentFactIndex + 1) % factsList.length; updateFactDisplay(); };
+        themeToggle.onclick = () => {
+            if (currentMode === 'normal') {
+                switchMode();
+            } else {
+                switchMode();
+            }
+        };
+        // отдельный обработчик для смены темной/светлой внутри режима? но по заданию кнопка одна: переключает и тему и режим? НЕТ! 
+        // По условию: значок смены темы со светлой на темную, но при нажатии меняется на шуточный ананасовый.
+        // Значит одна кнопка меняет сразу и dark/light и ананасовый? Сделаем так: клик - переключение режима (normal/pineapple) И смена dark/light.
+        // Но чтобы оставалась возможность сохранить светлую тему для ананасов, переопределим:
+        // У нас кнопка делает: currentMode = противоположный; и дополнительно инвертирует dark.
+        const originalSwitch = themeToggle.onclick;
+        themeToggle.onclick = () => {
+            // Меняем режим и дополнительно инвертируем dark
+            currentMode = currentMode === 'normal' ? 'pineapple' : 'normal';
+            currentDark = !currentDark;
+            localStorage.setItem('theme', currentDark ? 'dark' : 'light');
+            currentQuestions = currentMode === 'normal' ? normalQuestions : pineappleQuestions;
+            currentQuestionIndex = 0;
+            currentRow = 0;
+            saveProgress();
+            resetGameUI();
+            applyThemeAndMode();
+            renderQuizReadyState();
+        };
+        resetGameBtn.onclick = resetGameProgress;
+        renderQuizReadyState();
+    }
+    init();
+</script>
+</body>
+</html>

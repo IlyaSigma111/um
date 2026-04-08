@@ -13,7 +13,6 @@
 
         body {
             font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f0f4f8;
             color: #1e293b;
             padding: 20px;
             min-height: 100vh;
@@ -21,7 +20,18 @@
             position: relative;
         }
 
-        /* ============= ОБЩИЙ ФОН ДЛЯ ОБЫЧНОГО РЕЖИМА (геометрический) ============= */
+        /* ============= ОБЫЧНЫЙ РЕЖИМ — мягкий приглушённый фон ============= */
+        body.light {
+            background: #d9e2e8;  /* мягкий серо-голубой, не белый */
+            color: #1e293b;
+        }
+        /* Тёмный вариант обычного режима */
+        body.dark {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        
+        /* Мягкие геометрические фигуры для обычного режима (едва заметные) */
         .normal-bg {
             position: fixed;
             top: 0;
@@ -34,79 +44,79 @@
         }
         .normal-bg .shape {
             position: absolute;
-            background: rgba(147, 197, 253, 0.15);
             border-radius: 50%;
-            animation: floatNormal 20s ease-in-out infinite;
+            filter: blur(60px);
+            animation: floatNormal 25s ease-in-out infinite;
         }
         .normal-bg .shape:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: -100px;
-            left: -100px;
-            background: rgba(59, 130, 246, 0.1);
-            animation-duration: 25s;
+            width: 400px;
+            height: 400px;
+            top: -150px;
+            left: -150px;
+            background: rgba(100, 150, 200, 0.25);
+            animation-duration: 30s;
         }
         .normal-bg .shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            bottom: 50px;
-            right: -50px;
-            background: rgba(168, 85, 247, 0.08);
-            animation-duration: 20s;
-            animation-delay: 2s;
-        }
-        .normal-bg .shape:nth-child(3) {
-            width: 150px;
-            height: 150px;
-            top: 40%;
-            left: 80%;
-            background: rgba(236, 72, 153, 0.08);
-            animation-duration: 18s;
-            animation-delay: 5s;
-        }
-        .normal-bg .shape:nth-child(4) {
-            width: 250px;
-            height: 250px;
-            bottom: 20%;
-            left: 10%;
-            background: rgba(34, 197, 94, 0.06);
-            animation-duration: 22s;
-            animation-delay: 1s;
-        }
-        .normal-bg .shape:nth-child(5) {
-            width: 100px;
-            height: 100px;
-            top: 15%;
-            left: 20%;
-            background: rgba(249, 115, 22, 0.1);
-            animation-duration: 15s;
-            animation-delay: 8s;
-        }
-        .normal-bg .shape:nth-child(6) {
-            width: 180px;
-            height: 180px;
-            top: 70%;
-            left: 75%;
-            background: rgba(59, 130, 246, 0.07);
-            animation-duration: 28s;
+            width: 350px;
+            height: 350px;
+            bottom: -100px;
+            right: -100px;
+            background: rgba(180, 130, 200, 0.2);
+            animation-duration: 25s;
             animation-delay: 3s;
         }
+        .normal-bg .shape:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            top: 30%;
+            left: 70%;
+            background: rgba(80, 180, 150, 0.2);
+            animation-duration: 28s;
+            animation-delay: 7s;
+        }
+        .normal-bg .shape:nth-child(4) {
+            width: 300px;
+            height: 300px;
+            bottom: 20%;
+            left: 5%;
+            background: rgba(200, 140, 100, 0.2);
+            animation-duration: 35s;
+            animation-delay: 2s;
+        }
+        .normal-bg .shape:nth-child(5) {
+            width: 180px;
+            height: 180px;
+            top: 60%;
+            left: 85%;
+            background: rgba(150, 180, 220, 0.25);
+            animation-duration: 22s;
+            animation-delay: 10s;
+        }
+        .normal-bg .shape:nth-child(6) {
+            width: 220px;
+            height: 220px;
+            top: 10%;
+            left: 40%;
+            background: rgba(210, 170, 120, 0.2);
+            animation-duration: 27s;
+            animation-delay: 5s;
+        }
         @keyframes floatNormal {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            33% {
-                transform: translate(30px, -30px) rotate(5deg);
-            }
-            66% {
-                transform: translate(-20px, 20px) rotate(-3deg);
-            }
-            100% {
-                transform: translate(0, 0) rotate(0deg);
-            }
+            0% { transform: translate(0, 0); }
+            33% { transform: translate(40px, -40px); }
+            66% { transform: translate(-30px, 30px); }
+            100% { transform: translate(0, 0); }
         }
 
-        /* СДВГ-ФОН для ананасового режима */
+        /* Тёмный режим — более тёмные фигуры */
+        body.dark .normal-bg .shape:nth-child(1) { background: rgba(50, 100, 150, 0.2); }
+        body.dark .normal-bg .shape:nth-child(2) { background: rgba(120, 80, 150, 0.15); }
+        body.dark .normal-bg .shape:nth-child(3) { background: rgba(40, 120, 100, 0.15); }
+        body.dark .normal-bg .shape:nth-child(4) { background: rgba(150, 90, 60, 0.15); }
+        body.dark .normal-bg .shape:nth-child(5) { background: rgba(80, 110, 160, 0.2); }
+        body.dark .normal-bg .shape:nth-child(6) { background: rgba(160, 120, 80, 0.15); }
+
+        /* ============= СДВГ-ФОН для ананасового режима ============= */
         .adhd-container {
             position: fixed;
             top: 0;
@@ -185,7 +195,7 @@
             z-index: 2;
         }
         .theme-toggle {
-            background: #e2e8f0;
+            background: #cbd5e1;
             border: none;
             font-size: 1.8rem;
             cursor: pointer;
@@ -218,23 +228,19 @@
             backdrop-filter: blur(2px);
         }
 
-        /* СВЕТЛАЯ ТЕМА (обычная) */
-        body.light {
-            background: #f0f4f8;
-            color: #1e293b;
-        }
+        /* СВЕТЛАЯ ТЕМА (обычный режим) — полупрозрачные блоки */
         body.light .facts-section,
         body.light .quiz-panel {
-            background: rgba(255,255,255,0.92);
+            background: rgba(255, 255, 255, 0.85);
             border-color: #cbd5e1;
             color: #1e293b;
         }
         body.light .fact-text {
-            background: #eef2ff;
+            background: rgba(238, 242, 255, 0.9);
             color: #1e293b;
         }
         body.light .question-card {
-            background: #f8fafc;
+            background: rgba(248, 250, 252, 0.9);
             color: #1e293b;
         }
         body.light .timer {
@@ -247,23 +253,19 @@
             border-color: #94a3b8;
         }
 
-        /* ТЁМНАЯ ТЕМА (обычная) */
-        body.dark {
-            background: #0f172a;
-            color: #e2e8f0;
-        }
+        /* ТЁМНАЯ ТЕМА (обычный режим) */
         body.dark .facts-section,
         body.dark .quiz-panel {
-            background: rgba(30,41,59,0.92);
+            background: rgba(30, 41, 59, 0.9);
             border-color: #334155;
             color: #f1f5f9;
         }
         body.dark .fact-text {
-            background: #0f172a;
+            background: rgba(15, 23, 42, 0.9);
             color: #e2e8f0;
         }
         body.dark .question-card {
-            background: #0f172a;
+            background: rgba(15, 23, 42, 0.9);
             color: #e2e8f0;
         }
         body.dark .timer {
@@ -283,16 +285,16 @@
         }
         body.pineapple .facts-section,
         body.pineapple .quiz-panel {
-            background: rgba(255,251,235,0.92);
+            background: rgba(255, 251, 235, 0.92);
             border-color: #fed7aa;
             color: #7c2d12;
         }
         body.pineapple .fact-text {
-            background: rgba(255,237,213,0.9);
+            background: rgba(255, 237, 213, 0.9);
             color: #7c2d12;
         }
         body.pineapple .question-card {
-            background: rgba(255,241,230,0.9);
+            background: rgba(255, 241, 230, 0.9);
             color: #7c2d12;
         }
         body.pineapple .timer {
@@ -316,16 +318,16 @@
         }
         body.pineapple.dark .facts-section,
         body.pineapple.dark .quiz-panel {
-            background: rgba(59,42,31,0.92);
+            background: rgba(59, 42, 31, 0.92);
             border-color: #78350f;
             color: #fed7aa;
         }
         body.pineapple.dark .fact-text {
-            background: rgba(74,54,39,0.9);
+            background: rgba(74, 54, 39, 0.9);
             color: #fed7aa;
         }
         body.pineapple.dark .question-card {
-            background: rgba(74,54,39,0.9);
+            background: rgba(74, 54, 39, 0.9);
             color: #fed7aa;
         }
         body.pineapple.dark .timer {
@@ -342,7 +344,7 @@
             border-radius: 32px;
             padding: 24px 28px;
             margin-bottom: 32px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             border: 1px solid;
             transition: background 0.2s, color 0.2s, border-color 0.2s;
         }
@@ -369,7 +371,7 @@
             gap: 12px;
         }
         .fact-btn {
-            background: #e2e8f0;
+            background: #cbd5e1;
             border: none;
             padding: 8px 18px;
             border-radius: 40px;
@@ -589,7 +591,6 @@
     let isAwaitingAnswer = false;
     let currentQuestionLock = false;
 
-    // СДВГ-элементы
     let adhdInterval = null;
     let floatingElements = [];
     let normalBg = null;
@@ -603,7 +604,7 @@
     const modeLabelSpan = document.getElementById('modeLabel');
     const resetGameBtn = document.getElementById('resetGameBtn');
 
-    // ============= ОБЫЧНЫЙ ФОН (геометрический) =============
+    // ============= ОБЫЧНЫЙ ФОН =============
     function startNormalBackground() {
         stopNormalBackground();
         if (currentMode === 'pineapple') return;
@@ -634,7 +635,6 @@
         const container = document.createElement('div');
         container.className = 'adhd-container';
         
-        // 15 летающих ананасов
         for (let i = 0; i < 15; i++) {
             const el = document.createElement('div');
             el.className = 'floating-pineapple';
@@ -648,7 +648,6 @@
             floatingElements.push(el);
         }
         
-        // 10 пульсирующих кругов
         for (let i = 0; i < 10; i++) {
             const circle = document.createElement('div');
             circle.className = 'pulsing-circle';
@@ -662,7 +661,6 @@
             floatingElements.push(circle);
         }
         
-        // 50 движущихся точек
         for (let i = 0; i < 50; i++) {
             const dot = document.createElement('div');
             dot.className = 'adhd-dot';
@@ -678,7 +676,6 @@
             floatingElements.push(dot);
         }
         
-        // 8 вращающихся шестиугольников
         const hexSymbols = ['⬡', '⬢', '⬟', '🔶', '🔷', '🍍'];
         for (let i = 0; i < 8; i++) {
             const hex = document.createElement('div');
@@ -702,7 +699,7 @@
             clearInterval(adhdInterval);
             adhdInterval = null;
         }
-        floatingElements.forEach(el => el.remove());
+        floatingElements.forEach(el => { if(el && el.remove) el.remove(); });
         floatingElements = [];
     }
     
